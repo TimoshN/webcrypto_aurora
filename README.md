@@ -6,8 +6,8 @@ dependencies:
   webcrypto: ^0.5.5
   webcrypto_aurora:
     git:
-      url: https://gitflic.ru/project/yacloud-ing/webcrypto_aurora.git
-      ref: master
+      url: https://github.com/TimoshN/webcrypto_aurora.git
+      ref: main
       path: ./
 ```
 
