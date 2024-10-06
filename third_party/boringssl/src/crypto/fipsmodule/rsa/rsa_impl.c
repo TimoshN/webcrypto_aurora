@@ -1107,9 +1107,11 @@ static int generate_prime(BIGNUM *out, int bits, const BIGNUM *e,
     // RSA key generation's bottleneck is discarding composites. If it fails
     // trial division, do not bother computing a GCD or performing Miller-Rabin.
     if (!bn_odd_number_is_obviously_composite(out)) {
-      // Check gcd(out-1, e) is one (steps 4.5 and 5.6).
+      // Check gcd(out-1, e) is one (steps 4.5 and 5.6). Leaking the final
+      // result of this comparison is safe because, if not relatively prime, the
+      // value will be discarded.
       int relatively_prime;
-      if (!BN_sub(tmp, out, BN_value_one()) ||
+      if (!bn_usub_consttime(tmp, out, BN_value_one()) ||
           !bn_is_relatively_prime(&relatively_prime, tmp, e, ctx)) {
         goto err;
       }
